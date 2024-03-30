@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Application Form</title>
+<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet" />
+<style>
+    .error {
+    color: red;
+}
+
+body{
+    background-color: #d1e5ef;
+}
+
+h1{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-family: Nunito;
+    text-decoration: underline;
+}
+
+form{
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color:#fff;
+    border-radius: 8px;
+    border: #008148; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Nunito;
+}
+
+form label {
+    margin-bottom: 6px;
+}
+  
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border:1px solid #1e3932;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: Nunito;
+}
+  
+
+button{
+    background-color: #d1e5ef;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Nunito;
+}
+</style>
+</head>
+<body>
+ <br>
+    <h1>Job Application Form</h1> 
+<form id="jobApplicationForm" >
+  <div class="tyype">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <span id="nameError" class="error"></span>
+  </div> <br>
+
+  <div class="tyype">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+    <span id="emailError" class="error"></span>
+  </div> <br>
+
+  <div class="tyype">
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone">
+    <span id="phoneError" class="error"></span>
+  </div> <br>
+
+  <div class="tyype">
+    <label for="address">Address:</label>
+    <textarea id="address" name="address"></textarea>
+    <span id="addressError" class="error"></span>
+  </div> <br>
+
+  <div class="tyype">
+    <label for="resume">Resume:</label>
+    <input type="file" id="resume" name="resume">
+    <span id="resumeError" class="error"></span>
+  </div> <br>
+
+  <button type="submit" id="submitBtn" disabled>Submit</button>
+
+</form>
+
+<script>
+  const form = document.getElementById('jobApplicationForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  const addressInput = document.getElementById('address');
+  const resumeInput = document.getElementById('resume');
+  const submitBtn = document.getElementById('submitBtn');
+
+  const errorElements = {
+    name: document.getElementById('nameError'),
+    email: document.getElementById('emailError'),
+    phone: document.getElementById('phoneError'),
+    address: document.getElementById('addressError'),
+    resume: document.getElementById('resumeError')
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+
+    // Name Validation
+    if (!nameInput.value.trim().match(/^[a-zA-Z]+$/)) {
+      errorElements.name.textContent = 'Name must contain only letters.';
+      isValid = false;
+    } else {
+      errorElements.name.textContent = '';
+    }
+
+    // Email Validation
+    if (!emailInput.value.trim().match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+      errorElements.email.textContent = 'Invalid email format.';
+      isValid = false;
+    } else {
+      errorElements.email.textContent = '';
+    }
+
+    // Phone Number Validation
+    if (!phoneInput.value.trim().match(/^\d{3}-\d{3}-\d{4}$/)) {
+      errorElements.phone.textContent = 'Invalid phone number format.';
+      isValid = false;
+    } else {
+      errorElements.phone.textContent = '';
+    }
+
+    // Address Validation
+    if (addressInput.value.trim().length === 0) {
+      errorElements.address.textContent = 'Address cannot be empty.';
+      isValid = false;
+    } else {
+      errorElements.address.textContent = '';
+    }
+
+    // Resume Validation
+    const allowedExtensions = ['pdf', 'docx'];
+    const fileExtension = resumeInput.value.trim().split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension) || resumeInput.files[0].size > 5 * 1024 * 1024) {
+      errorElements.resume.textContent = 'Please upload a valid file (PDF or DOCX) under 5MB.';
+      isValid = false;
+    } else {
+      errorElements.resume.textContent = '';
+    }
+
+    // Enable/disable submit button based on form validity
+    submitBtn.disabled = !isValid;
+
+    return isValid;
+  };
+
+  // Event listeners for input validation
+  nameInput.addEventListener('input', validateForm);
+  emailInput.addEventListener('input', validateForm);
+  phoneInput.addEventListener('input', validateForm);
+  addressInput.addEventListener('input', validateForm);
+  resumeInput.addEventListener('change', validateForm);
+
+  // Form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      // Submit the form
+      console.log('Form submitted successfully.');
+      // You can submit the form data to the server here
+    } else {
+      console.log('Form validation failed. Please correct the errors.');
+    }
+  });
+</script>
+</body>
+</html>
